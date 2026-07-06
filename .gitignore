@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+esc.db
+esc.db-wal
+esc.db-shm
