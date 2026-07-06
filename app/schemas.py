@@ -125,6 +125,7 @@ class AttendanceStatusOut(ApiModel):
     venue: VenueOut | None
     attended_at: str | None
     server_time: str
+    gps_accuracy_max_m: int  # admin-configured; the client gate uses this too
 
 
 class SubmitAttendanceIn(ApiModel):

@@ -51,6 +51,7 @@ def _status(db: Session, user: User) -> dict:
     ensure_today_session(db)
     now = now_local(db)
     today = now.strftime("%Y-%m-%d")
+    settings = get_app_settings(db)
 
     activity = (
         db.query(Activity)
@@ -67,6 +68,7 @@ def _status(db: Session, user: User) -> dict:
         "venue": None,
         "attended_at": None,
         "server_time": now.isoformat(),
+        "gps_accuracy_max_m": int(settings["gps_accuracy_max_m"]),
     }
 
     if activity is None:
