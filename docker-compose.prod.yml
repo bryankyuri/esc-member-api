@@ -1,0 +1,35 @@
+# Production (server): pulls the prebuilt API image and fronts it with Caddy
+# for automatic HTTPS on $API_DOMAIN. IMAGE_API + API_DOMAIN come from the
+# server .env (and the deploy step). Runtime config (Google OAuth, cookie
+# domain, superadmin emails, …) also .env — see DEPLOYMENT.md.
+services:
+  api:
+    image: ${IMAGE_API}
+    env_file:
+      - path: .env
+        required: true
+    expose:
+      - "8000"
+    volumes:
+      # SQLite database persists across redeploys.
+      - ./data:/app/data
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      API_DOMAIN: ${API_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

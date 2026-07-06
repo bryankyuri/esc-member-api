@@ -1,0 +1,12 @@
+# Local test: docker compose up --build  →  http://localhost:8000
+services:
+  api:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

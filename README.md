@@ -16,6 +16,14 @@ copy .env.example .env           # then edit — see below
 uvicorn app.main:app --reload --port 8000
 ```
 
+Or with Docker (same image as production): `docker compose up --build`.
+
+## Deployment
+
+Docker image → GHCR → VPS via docker compose behind Caddy, driven by
+GitHub Actions on push to `main` (same pattern as dictionary-service).
+See `../DEPLOYMENT.md` for server prep and repo secrets.
+
 OpenAPI docs: http://localhost:8000/docs
 The SQLite file (`esc.db`) and schema are created automatically on first boot,
 with a placeholder default venue (Pasar Kita — fix the coordinates in the

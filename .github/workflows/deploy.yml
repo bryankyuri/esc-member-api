@@ -1,9 +1,16 @@
-name: Deploy API
+name: Build & Deploy API
+
+# Same pattern as dictionary-service: build the image, push to GHCR, roll it
+# out on the VPS via docker compose (behind Caddy for HTTPS). The frontends
+# deploy separately on Cloudflare Pages — this workflow is backend-only.
+#
+# Repo secrets: VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_PORT (opt), DEPLOY_PATH.
+# One-time server prep + .env: see DEPLOYMENT.md (repo parent) / README.
 
 on:
   push:
     branches: [main]
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 concurrency:
   group: deploy-api
@@ -17,33 +24,76 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
       - name: App imports and boots
-        run: python -c "from app.main import app; print('app imports OK, routes registered')"
+        run: python -c "from app.main import app; print('app imports OK')"
 
-  deploy:
-    name: Deploy to Lightsail
+  build:
     needs: check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: Pull, install, restart, verify
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image name (lowercased)
+        id: img
+        run: echo "ref=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - name: Build & push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.img.outputs.ref }}:latest
+            ${{ steps.img.outputs.ref }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy compose + Caddyfile to the server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          source: "docker-compose.prod.yml,Caddyfile"
+          target: ${{ secrets.DEPLOY_PATH }}
+      - name: Pull, restart & verify on the server
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.LIGHTSAIL_HOST }}
-          username: ubuntu
-          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
-          script_stop: true
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
           script: |
-            sudo -u esc bash -c '
-              set -e
-              cd /home/esc/member-api
-              git fetch origin main
-              git reset --hard origin/main
-              .venv/bin/pip install -q -r requirements.txt
-            '
-            sudo systemctl restart member-api
-            sleep 3
-            curl -fsS http://127.0.0.1:8000/health
-            echo "deploy OK"
+            set -e
+            cd "${{ secrets.DEPLOY_PATH }}"
+            REPO="${{ github.repository }}"; REPO="${REPO,,}"
+            export IMAGE_API="ghcr.io/${REPO}:latest"
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
+            docker image prune -f
+            # Wait for the container healthcheck to go green.
+            cid=$(docker compose -f docker-compose.prod.yml ps -q api)
+            for i in $(seq 1 20); do
+              status=$(docker inspect -f '{{.State.Health.Status}}' "$cid")
+              [ "$status" = "healthy" ] && echo "deploy OK (healthy)" && exit 0
+              sleep 3
+            done
+            echo "container never became healthy"; docker logs --tail 50 "$cid"; exit 1

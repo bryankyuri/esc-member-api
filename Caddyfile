@@ -1,0 +1,12 @@
+# TLS reverse proxy for the API. Caddy automatically obtains + renews a
+# Let's Encrypt certificate for $API_DOMAIN — point the A record at this
+# server's static IP (Cloudflare: DNS-only / grey cloud) before starting.
+{$API_DOMAIN} {
+	encode gzip
+	reverse_proxy api:8000
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		-Server
+	}
+}

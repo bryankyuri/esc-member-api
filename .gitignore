@@ -6,3 +6,4 @@ venv/
 esc.db
 esc.db-wal
 esc.db-shm
+data/
