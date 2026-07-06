@@ -392,14 +392,31 @@ def delete_activity(activity_id: int, db: Session = Depends(get_db)):
     activity = db.get(Activity, activity_id)
     if activity is None:
         return
-    # Attendance sessions are never deleted — only marked libur. Duplicates
-    # can't occur anymore (one session per date is enforced on create/update).
     if activity.is_attendance_event:
-        raise api_error(
-            409,
-            "session_protected",
-            "attendance sessions cannot be deleted; mark as libur",
+        # The DEFAULT-DAY weekly session (e.g. Monday) is never deleted —
+        # only marked libur. Attendance sessions on other days are extra
+        # events and may be deleted…
+        settings = get_app_settings(db)
+        day = datetime.strptime(activity.date, "%Y-%m-%d").date()
+        if (day.weekday() + 1) % 7 == int(settings["default_day"]):
+            raise api_error(
+                409,
+                "session_protected",
+                "default-day sessions cannot be deleted; mark as libur",
+            )
+        # …unless members already checked in — that history is protected.
+        has_attendance = (
+            db.query(Attendance)
+            .filter(Attendance.activity_id == activity_id)
+            .first()
+            is not None
         )
+        if has_attendance:
+            raise api_error(
+                409,
+                "has_attendance",
+                "sessions with attendance records cannot be deleted; mark as libur",
+            )
     db.delete(activity)
     db.commit()
 
