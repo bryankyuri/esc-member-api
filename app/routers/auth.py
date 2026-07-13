@@ -7,7 +7,13 @@ from app.config import get_settings
 from app.db import get_db
 from app.deps import api_error, effective_role, get_current_user
 from app.models import AuthSession, User
-from app.schemas import CompleteProfileIn, UpdateProfileIn, UserOut
+from app.schemas import (
+    CompleteProfileIn,
+    SecurityAnswerIn,
+    SecurityResultOut,
+    UpdateProfileIn,
+    UserOut,
+)
 from app.security import (
     SESSION_COOKIE,
     clear_session_cookie,
@@ -16,9 +22,19 @@ from app.security import (
     session_expiry,
     set_session_cookie,
 )
-from app.services import user_out
+from app.services import now_local, user_out
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+# Membership proof gate. Not a real secret (it's club trivia) — just enough to
+# stop a random Google account completing registration. Answer is compared
+# case-insensitively with collapsed whitespace.
+SECURITY_ANSWER = "endah widiastuti"
+MAX_SECURITY_ATTEMPTS = 10
+
+
+def _normalize(s: str) -> str:
+    return " ".join(s.strip().lower().split())
 
 oauth = OAuth()
 oauth.register(
@@ -105,12 +121,52 @@ def me(user: User = Depends(get_current_user)):
     return user_out(user, effective_role(user))
 
 
+@router.post("/security-question", response_model=SecurityResultOut)
+def security_question(
+    payload: SecurityAnswerIn,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if user.security_passed:
+        return {"passed": True, "blocked": False, "attempts_left": MAX_SECURITY_ATTEMPTS}
+
+    today = now_local(db).strftime("%Y-%m-%d")
+    if user.security_attempt_date != today:
+        user.security_attempt_date = today
+        user.security_attempts = 0
+
+    if user.security_attempts >= MAX_SECURITY_ATTEMPTS:
+        db.commit()
+        return {"passed": False, "blocked": True, "attempts_left": 0}
+
+    if _normalize(payload.answer) == SECURITY_ANSWER:
+        user.security_passed = True
+        db.commit()
+        return {
+            "passed": True,
+            "blocked": False,
+            "attempts_left": MAX_SECURITY_ATTEMPTS - user.security_attempts,
+        }
+
+    user.security_attempts += 1
+    blocked = user.security_attempts >= MAX_SECURITY_ATTEMPTS
+    db.commit()
+    return {
+        "passed": False,
+        "blocked": blocked,
+        "attempts_left": MAX_SECURITY_ATTEMPTS - user.security_attempts,
+    }
+
+
 @router.post("/complete-profile", response_model=UserOut)
 def complete_profile(
     payload: CompleteProfileIn,
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    # Can't complete registration without passing the membership gate first.
+    if not user.security_passed:
+        raise api_error(403, "security_required")
     user.full_name = payload.full_name.strip()
     user.whatsapp = payload.whatsapp.strip()
     user.domicile = payload.domicile.strip()

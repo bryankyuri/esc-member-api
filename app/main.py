@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
+from sqlalchemy import text
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.config import get_settings
@@ -13,11 +14,39 @@ from app.routers import activities, admin, attendance, auth
 from app.services import seed_defaults
 
 
+def _lightweight_migrations() -> None:
+    """Additive column migrations for SQLite (create_all won't ALTER existing
+    tables). Idempotent. Adopt Alembic if this grows beyond a few columns."""
+    with engine.begin() as conn:
+        cols = {row[1] for row in conn.execute(text("PRAGMA table_info(users)"))}
+        if "security_passed" not in cols:
+            conn.execute(
+                text(
+                    "ALTER TABLE users ADD COLUMN security_passed "
+                    "BOOLEAN NOT NULL DEFAULT 0"
+                )
+            )
+            # Grandfather everyone already in production — they signed up
+            # before the security question existed.
+            conn.execute(text("UPDATE users SET security_passed = 1"))
+        if "security_attempts" not in cols:
+            conn.execute(
+                text(
+                    "ALTER TABLE users ADD COLUMN security_attempts "
+                    "INTEGER NOT NULL DEFAULT 0"
+                )
+            )
+        if "security_attempt_date" not in cols:
+            conn.execute(
+                text("ALTER TABLE users ADD COLUMN security_attempt_date VARCHAR")
+            )
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    # v1: schema via create_all; switch to Alembic before the schema first
-    # needs to evolve in production.
+    # v1: schema via create_all; switch to Alembic before the schema grows.
     Base.metadata.create_all(engine)
+    _lightweight_migrations()
     with SessionLocal() as db:
         seed_defaults(db)
     yield

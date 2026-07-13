@@ -25,6 +25,17 @@ class UserOut(ApiModel):
     instagram: str | None
     role: str
     profile_completed: bool
+    security_passed: bool
+
+
+class SecurityAnswerIn(ApiModel):
+    answer: str = Field(min_length=1, max_length=200)
+
+
+class SecurityResultOut(ApiModel):
+    passed: bool
+    blocked: bool
+    attempts_left: int
 
 
 class CompleteProfileIn(ApiModel):

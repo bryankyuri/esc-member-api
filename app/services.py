@@ -168,4 +168,5 @@ def user_out(user: User, role: str) -> dict:
         "instagram": user.instagram,
         "role": role,
         "profile_completed": user.profile_completed,
+        "security_passed": user.security_passed,
     }

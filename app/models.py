@@ -31,6 +31,13 @@ class User(Base):
     role: Mapped[str] = mapped_column(String, default="member")
     profile_completed: Mapped[bool] = mapped_column(Boolean, default=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # Membership proof gate (security question), before profile completion.
+    # Existing production members are grandfathered to True by the migration.
+    security_passed: Mapped[bool] = mapped_column(Boolean, default=False)
+    security_attempts: Mapped[int] = mapped_column(Integer, default=0)
+    security_attempt_date: Mapped[str | None] = mapped_column(
+        String, nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), onupdate=func.now()
