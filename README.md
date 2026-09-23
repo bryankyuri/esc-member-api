@@ -70,7 +70,61 @@ alembic upgrade head            # normally unnecessary — startup does it
 alembic current                 # where this database stands
 python -m scripts.seed_local    # refresh local dev data from a sanitised copy
 python -m scripts.verify_uuid before.db after.db
+python -m scripts.verify_roles esc.db [before.db]
 ```
+
+## How the public site learns about new articles
+
+Articles are readable the moment they are saved — the site fetches them at
+runtime. What a rebuild adds is the prerendered HTML and the sitemap entry.
+
+**This API never triggers a build.** It exposes a fingerprint of the public
+content instead:
+
+```
+GET /public/content-version
+{ "version": "746b748e3c710cd8", "articleCount": 3,
+  "latestUpdatedAt": …, "latestPublishedAt": …, "nextScheduledAt": … }
+```
+
+A Cloudflare Worker (`public-frontend/scripts/rebuild-worker/`) polls this and
+the version baked into the deployed site, and rebuilds **only when they
+differ**. So:
+
+- a draft edit changes nothing public → no build minutes spent;
+- a **scheduled post falling due** moves the fingerprint even though no row was
+  written, which a "has any row changed?" check would miss;
+- publishing never depends on this API being able to reach Cloudflare, and a
+  missed tick self-heals on the next one.
+
+No Cloudflare credentials live here.
+
+## Courses
+
+Course content lives in the database (`courses` → `course_modules` →
+`course_items`), managed from the dashboard by admins only. Certificates are
+issued when the **server** confirms every published item of a course is
+complete, read straight from those tables — the generated
+`courses_manifest.json` and `scripts/sync_course_manifest.py` were deleted in
+Phase 5, so there is no duplicate to keep in step.
+
+One thing here is load-bearing: **`course_items.content_id`**, not the row id,
+is what the public API exposes and what `learning_progress` and certificates
+are keyed on. The ids were inherited from the original JSON (`lyr-1`, `ow-3`)
+so that progress written before the move still counts. The admin API refuses
+to change an item's `content_id` for exactly that reason.
+
+First deploy of this phase, once:
+
+```bash
+alembic upgrade head              # 0007 creates the course tables
+python -m scripts.import_courses  # carries the original course content across
+```
+
+`import_courses` is idempotent (`--force` replaces a course's modules and items
+while keeping their content ids). `scripts/import_events.py` seeds the public
+calendar the same way; its `--anchor` flag shifts every date to sit around
+today, which is for a dev database and **never** for production.
 
 ## Notes
 

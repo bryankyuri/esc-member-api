@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.deps import require_complete_profile
+from app.deps import require_member
 from app.models import Activity, User
 from app.schemas import ActivityMemberOut
 from app.services import resolve_venue
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/activities", tags=["activities"])
 @router.get("", response_model=list[ActivityMemberOut])
 def list_activities(
     month: str = Query(pattern=r"^\d{4}-\d{2}$"),
-    _user: User = Depends(require_complete_profile),
+    _user: User = Depends(require_member),
     db: Session = Depends(get_db),
 ):
     rows = (

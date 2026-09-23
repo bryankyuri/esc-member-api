@@ -1,8 +1,12 @@
-"""Promote (or demote) a user by email from the CLI.
+"""Set a user's role by email from the CLI.
 
 Usage:
-    python -m scripts.promote_admin someone@gmail.com          # make admin
-    python -m scripts.promote_admin someone@gmail.com member   # demote
+    python -m scripts.promote_admin someone@gmail.com               # make admin
+    python -m scripts.promote_admin someone@gmail.com contributor   # articles CMS
+    python -m scripts.promote_admin someone@gmail.com user          # demote
+
+Roles are about what someone may *manage*. Membership (member-area access) is
+separate and is not touched here — see app/deps.py:is_member.
 """
 
 import sys
@@ -10,6 +14,7 @@ import sys
 sys.path.insert(0, ".")
 
 from app.db import SessionLocal  # noqa: E402
+from app.deps import STORED_ROLES  # noqa: E402
 from app.models import User  # noqa: E402
 
 
@@ -19,8 +24,9 @@ def main() -> None:
         raise SystemExit(1)
     email = sys.argv[1].strip().lower()
     role = sys.argv[2] if len(sys.argv) > 2 else "admin"
-    if role not in ("admin", "member"):
-        print("role must be 'admin' or 'member' (superadmin is env-only)")
+    if role not in STORED_ROLES:
+        print(f"role must be one of {', '.join(STORED_ROLES)} "
+              "(superadmin is env-only)")
         raise SystemExit(1)
 
     with SessionLocal() as db:

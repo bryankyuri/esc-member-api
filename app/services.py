@@ -2,10 +2,12 @@
 venue resolution, streaks, and record serialization."""
 
 from datetime import date, datetime, timedelta
+from urllib.parse import quote_plus
 from zoneinfo import ZoneInfo
 
 from sqlalchemy.orm import Session
 
+from app.deps import is_member
 from app.models import Activity, Attendance, Setting, User, Venue
 
 SETTINGS_DEFAULTS: dict[str, str] = {
@@ -14,6 +16,8 @@ SETTINGS_DEFAULTS: dict[str, str] = {
     "default_end": "23:59",
     "timezone": "Asia/Jakarta",
     "gps_accuracy_max_m": "200",
+    # Months without a check-in before a member is shown as dormant.
+    "membership_dormancy_months": "12",
 }
 
 DEFAULT_SESSION_TITLE = "ESC Weekly Session"
@@ -157,7 +161,113 @@ def seed_defaults(db: Session) -> None:
         db.commit()
 
 
-def user_out(user: User, role: str) -> dict:
+def public_slug(activity: Activity) -> str:
+    """The activity's public URL segment.
+
+    An admin-set slug when there is one; otherwise a date-derived fallback, so
+    every public activity has a working link even before anyone names it.
+    """
+    return activity.public_slug or f"{activity.date}-{activity.id[:8]}"
+
+
+def maps_url(venue: Venue) -> str:
+    """A map link built from the *address*, not the coordinates.
+
+    A search link gets a visitor to the door just as well as a pin, and it
+    avoids publishing the exact position of a venue that also gates check-in.
+    """
+    query = quote_plus(f"{venue.name} {venue.address}".strip())
+    return f"https://www.google.com/maps/search/?api=1&query={query}"
+
+
+def public_activity_out(db: Session, activity: Activity) -> dict:
+    """An activity as the public calendar shows it.
+
+    Deliberately narrow. It must never include:
+      * `attendance_code` — that is what stops someone checking in from home;
+      * the venue's `lat`/`lng` — those are the geofence the check-in is
+        measured against, and the address plus a map link get a visitor there
+        just as well.
+
+    Both omissions are asserted by the Phase 5 verification script; if this
+    shape ever grows a field, check it against that list first.
+    """
+    venue = resolve_venue(db, activity)
+    return {
+        "id": activity.id,
+        "slug": public_slug(activity),
+        "kind": activity.kind or "weekly",
+        "title": {
+            "id": activity.title,
+            "en": activity.title_en or activity.title,
+        },
+        "summary": {
+            "id": activity.summary_id or "",
+            "en": activity.summary_en or activity.summary_id or "",
+        },
+        "description": activity.public_description or [],
+        "date": activity.date,
+        "startTime": activity.start_time,
+        "endTime": activity.end_time,
+        "isHoliday": activity.is_holiday,
+        "price": (
+            {"amount": activity.price_amount, "currency": "IDR"}
+            if activity.price_amount
+            else None
+        ),
+        "venue": (
+            {
+                "name": venue.name,
+                "address": {"id": venue.address, "en": venue.address},
+                "mapsUrl": maps_url(venue),
+            }
+            if venue
+            else None
+        ),
+        "images": activity.images or [],
+        "links": activity.links or [],
+    }
+
+
+def dormancy_months(db: Session) -> int:
+    """How long without a check-in before a member counts as dormant."""
+    try:
+        return int(get_app_settings(db)["membership_dormancy_months"])
+    except (KeyError, ValueError):
+        return 12
+
+
+def membership_status(db: Session, user: User) -> str:
+    """none | registered | active | dormant | disabled.
+
+    A display label, never a permission — a dormant member may still check in,
+    and doing so makes them active again. Deliberately *not* stored: storing it
+    would need a nightly job, and every row would go stale the moment the
+    dormancy window changed.
+
+    `disabled` means an admin turned the account off (is_active=false). It is a
+    different thing from `dormant`, and the UI must never use one word for both.
+    """
+    if not user.is_active:
+        return "disabled"
+    if not is_member(user):
+        return "none"
+    if not user.attendance_count or user.last_attended_at is None:
+        return "registered"
+    cutoff = now_local(db) - timedelta(days=30 * dormancy_months(db))
+    return "active" if user.last_attended_at >= cutoff else "dormant"
+
+
+def record_attendance_stats(user: User, attended_at: datetime) -> None:
+    """Keep the denormalised attendance columns in step with a new check-in."""
+    user.attendance_count = (user.attendance_count or 0) + 1
+    if user.first_attended_at is None or attended_at < user.first_attended_at:
+        user.first_attended_at = attended_at
+    if user.last_attended_at is None or attended_at > user.last_attended_at:
+        user.last_attended_at = attended_at
+
+
+def user_out(user: User, role: str, db: Session | None = None) -> dict:
     return {
         "id": user.id,
         "email": user.email,
@@ -169,4 +279,14 @@ def user_out(user: User, role: str) -> dict:
         "role": role,
         "profile_completed": user.profile_completed,
         "security_passed": user.security_passed,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        # Membership: derived, and the only thing that opens the member area.
+        "is_member": is_member(user),
+        "membership_status": membership_status(db, user) if db else "none",
+        "member_since": user.member_since.isoformat() if user.member_since else None,
+        "attendance_count": user.attendance_count or 0,
+        "last_attended_at": (
+            user.last_attended_at.isoformat() if user.last_attended_at else None
+        ),
     }

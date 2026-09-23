@@ -53,8 +53,23 @@ def _parse(value) -> datetime | None:
         return None
 
 
+def _already_uuid(conn) -> bool:
+    """True when users.id is already a text column (migration applied)."""
+    for col in sa.inspect(conn).get_columns("users"):
+        if col["name"] == "id":
+            return "CHAR" in str(col["type"]).upper()
+    return False
+
+
 def upgrade() -> None:
     conn = op.get_bind()
+
+    # Guard: this migration rewrites ids, so running it twice would churn every
+    # id for no reason. A database converted by scripts/migrate_uuid.py before
+    # Alembic existed lands here — treat it as done.
+    if _already_uuid(conn):
+        print("0002_uuid_pks: ids are already UUIDs, nothing to do")
+        return
 
     # 1. one UUID per existing row, timestamped from that row's created_at
     id_map: dict[str, dict[int, str]] = {}

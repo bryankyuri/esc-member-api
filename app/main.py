@@ -10,7 +10,18 @@ from starlette.middleware.sessions import SessionMiddleware
 from app.config import get_settings
 from app.db import SessionLocal
 from app.migrations import run_migrations
-from app.routers import activities, admin, attendance, auth
+from app.routers import (
+    activities,
+    admin,
+    articles_admin,
+    attendance,
+    auth,
+    certificates,
+    courses_admin,
+    learning,
+    public,
+)
+from app.security import purge_expired_sessions
 from app.services import seed_defaults
 
 
@@ -22,6 +33,8 @@ async def lifespan(_app: FastAPI):
     run_migrations()
     with SessionLocal() as db:
         seed_defaults(db)
+        # Expired rows are already rejected on use; this keeps the table tidy.
+        purge_expired_sessions(db)
     yield
 
 
@@ -52,6 +65,11 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(attendance.router)
 app.include_router(activities.router)
+app.include_router(learning.router)
+app.include_router(certificates.router)
+app.include_router(public.router)
+app.include_router(articles_admin.router)
+app.include_router(courses_admin.router)
 app.include_router(admin.router)
 
 

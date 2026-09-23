@@ -49,7 +49,9 @@ oauth.register(
 @router.get("/google/login")
 async def google_login(request: Request, next: str = "member"):
     # Remember which frontend started the flow so the callback can return there.
-    request.session["login_next"] = "dashboard" if next == "dashboard" else "member"
+    request.session["login_next"] = (
+        next if next in ("dashboard", "public") else "member"
+    )
     redirect_uri = f"{get_settings().api_base_url}/auth/google/callback"
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
@@ -58,11 +60,10 @@ async def google_login(request: Request, next: str = "member"):
 async def google_callback(request: Request, db: Session = Depends(get_db)):
     settings = get_settings()
     next_app = request.session.pop("login_next", "member")
-    frontend = (
-        settings.dashboard_frontend_url
-        if next_app == "dashboard"
-        else settings.member_frontend_url
-    )
+    frontend = {
+        "dashboard": settings.dashboard_frontend_url,
+        "public": settings.public_frontend_url,
+    }.get(next_app, settings.member_frontend_url)
 
     try:
         token = await oauth.google.authorize_access_token(request)
@@ -87,7 +88,7 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
             email=email,
             full_name=info.get("name") or email.split("@")[0],
             avatar_url=info.get("picture"),
-            role="member",
+            role="user",
             profile_completed=False,
         )
         db.add(user)
@@ -98,6 +99,15 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
     if not user.is_active:
         db.commit()
         return RedirectResponse(f"{frontend}/login?error=inactive")
+
+    # Rotate: signing in again replaces the cookie this browser was carrying,
+    # so an old stolen token stops working. Sessions from *other* devices are
+    # left alone — logging in on a laptop must not sign you out on a phone.
+    old_token = request.cookies.get(SESSION_COOKIE)
+    if old_token:
+        db.query(AuthSession).filter(
+            AuthSession.token_hash == hash_token(old_token)
+        ).delete()
 
     raw_token = new_session_token()
     db.add(
@@ -117,8 +127,8 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
 
 
 @router.get("/me", response_model=UserOut)
-def me(user: User = Depends(get_current_user)):
-    return user_out(user, effective_role(user))
+def me(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    return user_out(user, effective_role(user), db)
 
 
 @router.post("/security-question", response_model=SecurityResultOut)
@@ -172,8 +182,11 @@ def complete_profile(
     user.domicile = payload.domicile.strip()
     user.instagram = payload.instagram.strip().lstrip("@")
     user.profile_completed = True
+    # This is the moment they become a member (question passed + profile done).
+    if user.member_since is None:
+        user.member_since = now_local(db)
     db.commit()
-    return user_out(user, effective_role(user))
+    return user_out(user, effective_role(user), db)
 
 
 @router.patch("/profile", response_model=UserOut)
@@ -191,7 +204,7 @@ def update_profile(
     if payload.instagram is not None:
         user.instagram = payload.instagram.strip().lstrip("@")
     db.commit()
-    return user_out(user, effective_role(user))
+    return user_out(user, effective_role(user), db)
 
 
 @router.post("/logout", status_code=204)

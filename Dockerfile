@@ -7,6 +7,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 COPY scripts ./scripts
+# Alembic must be in the image: there is no separate migration step, so the
+# app upgrades the schema itself on boot (app/migrations.py) and reads both of
+# these from the working directory. Without them the container crashes at
+# startup instead of migrating.
+COPY alembic.ini ./alembic.ini
+COPY alembic ./alembic
 
 # SQLite lives on a host volume (docker-compose mounts ./data:/app/data).
 ENV DATABASE_URL=sqlite:////app/data/esc.db

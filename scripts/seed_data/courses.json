@@ -1,0 +1,826 @@
+[
+  {
+    "slug": "menulis-lirik-dasar",
+    "title": {
+      "id": "Menulis Lirik: Dasar",
+      "en": "Lyric Writing: Foundations"
+    },
+    "summary": {
+      "id": "Dari ide mentah sampai satu lirik utuh. Empat modul: menemukan ide, menyusun bentuk lagu, bermain rima, lalu mencocokkan lirik dengan ritme.",
+      "en": "From a raw idea to one finished lyric. Four modules: finding the idea, building song form, working with rhyme, then matching your words to rhythm."
+    },
+    "level": "beginner",
+    "progression": "linear",
+    "accent": "#ffc778",
+    "icon": "✍️",
+    "outcomes": [
+      {
+        "id": "Menemukan ide lagu dari hal sehari-hari lewat object writing.",
+        "en": "Find song ideas in everyday things through object writing."
+      },
+      {
+        "id": "Menyusun verse, chorus, dan bridge dengan tugasnya masing-masing.",
+        "en": "Build verses, choruses, and bridges that each do their own job."
+      },
+      {
+        "id": "Memakai rima sempurna dan rima keluarga tanpa terdengar dipaksakan.",
+        "en": "Use perfect and family rhyme without sounding forced."
+      },
+      {
+        "id": "Mencocokkan tekanan kata dengan ritme lagu.",
+        "en": "Match word stress to the rhythm of the music."
+      }
+    ],
+    "modules": [
+      {
+        "id": "m1",
+        "title": { "id": "Menemukan Ide", "en": "Finding the Idea" },
+        "summary": {
+          "id": "Sebelum menulis lirik, kita kumpulkan bahan mentahnya dulu.",
+          "en": "Before writing a lyric, gather the raw material."
+        },
+        "items": [
+          {
+            "id": "lyr-1",
+            "slug": "apa-itu-object-writing",
+            "kind": "lesson",
+            "title": {
+              "id": "Apa itu object writing?",
+              "en": "What is object writing?"
+            },
+            "minutes": 10,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Object writing adalah latihan menulis pendek — biasanya sepuluh menit — di mana kamu memilih satu benda, lalu menuliskan segala hal yang muncul di kepalamu tentang benda itu. Bukan menulis lirik, bukan menulis cerita. Hanya mengumpulkan bahan.",
+                  "en": "Object writing is a short writing exercise — usually ten minutes — where you pick one object and write down everything that comes to mind about it. You are not writing a lyric or a story. You are gathering material."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Kenapa ini penting? Karena lirik yang hidup hampir selalu datang dari detail yang spesifik. \"Aku sedih\" tidak membuat pendengar ikut merasa. \"Kopi di mejaku sudah dingin sejak kamu pergi\" membuat mereka melihat, mencium, dan merasakannya sendiri.",
+                  "en": "Why does this matter? Because lyrics that feel alive almost always come from specific detail. \"I am sad\" does not make a listener feel anything. \"The coffee on my table went cold when you left\" makes them see it, smell it, and feel it themselves."
+                }
+              },
+              {
+                "type": "heading",
+                "text": { "id": "Tujuh pintu masuk", "en": "Seven ways in" }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Saat menulis, sentuh sebanyak mungkin indra. Tujuh yang biasa dipakai penulis lagu:",
+                  "en": "While you write, touch as many senses as you can. Seven that songwriters usually work with:"
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Penglihatan — warna, bentuk, cahaya", "en": "Sight — colour, shape, light" },
+                  { "id": "Pendengaran — bunyi, suara, keheningan", "en": "Sound — noise, voices, silence" },
+                  { "id": "Penciuman — bau yang menempel di ingatan", "en": "Smell — the scent that sticks to a memory" },
+                  { "id": "Pengecapan — rasa di lidah", "en": "Taste — what is on your tongue" },
+                  { "id": "Perabaan — tekstur, suhu", "en": "Touch — texture, temperature" },
+                  { "id": "Tubuh — detak jantung, perut mual, napas pendek", "en": "Body — heartbeat, churning stomach, short breath" },
+                  { "id": "Gerak — apa yang bergerak, seberapa cepat", "en": "Motion — what moves, and how fast" }
+                ]
+              },
+              {
+                "type": "example",
+                "text": {
+                  "id": "Benda: kunci rumah lama. \"Logamnya dingin, ada karat tipis di gerigi. Bunyinya berdenting di saku setiap aku jalan. Bau besi tertinggal di telapak tangan. Pintunya selalu macet kalau hujan — aku harus mengangkat gagangnya sedikit.\"",
+                  "en": "Object: the key to an old house. \"The metal is cold, a little rust along the teeth. It clinks in my pocket when I walk. The smell of iron stays on my palm. The door always sticks when it rains — I have to lift the handle a bit.\""
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Jangan berhenti untuk memperbaiki kalimat. Sepuluh menit tanpa jeda, tanpa menghapus. Yang jelek nanti dibuang; yang bagus sering muncul di menit-menit terakhir.",
+                  "en": "Do not stop to fix your sentences. Ten minutes, no pausing, no deleting. You can throw away the weak parts later; the good lines often arrive in the last few minutes."
+                }
+              },
+              {
+                "type": "quote",
+                "text": {
+                  "id": "Tugas latihan ini bukan menghasilkan lirik bagus, tapi melatih mata dan telinga supaya terbiasa menangkap detail.",
+                  "en": "The job of this exercise is not to produce a good lyric, but to train your eyes and ears to notice detail."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-2",
+            "slug": "sudut-pandang",
+            "kind": "lesson",
+            "title": {
+              "id": "Siapa yang bicara, kepada siapa?",
+              "en": "Who is speaking, and to whom?"
+            },
+            "minutes": 8,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Sebelum menulis baris pertama, tentukan tiga hal: siapa yang bicara, kepada siapa, dan kapan. Tiga jawaban ini menentukan pilihan katamu sampai akhir lagu.",
+                  "en": "Before the first line, decide three things: who is speaking, to whom, and when. Those three answers shape your word choices for the whole song."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Orang pertama ke \"kamu\" — paling intim, seperti bicara langsung.", "en": "First person to \"you\" — the most intimate, like speaking directly." },
+                  { "id": "Orang pertama ke diri sendiri — terasa seperti buku harian.", "en": "First person to yourself — it reads like a diary." },
+                  { "id": "Orang ketiga — kita menonton tokohnya dari jauh.", "en": "Third person — we watch the character from a distance." }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "\"Kapan\" juga penting: apakah peristiwanya sedang terjadi, atau sudah lama lewat? Lagu yang bercerita dari kejauhan waktu biasanya lebih tenang; yang terjadi sekarang terasa lebih mendesak.",
+                  "en": "\"When\" matters too: is this happening now, or long past? A song told from a distance in time usually feels calmer; one happening now feels urgent."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Coba tulis satu baris yang sama dalam tiga sudut pandang. Rasakan mana yang paling membuatmu ingin melanjutkan.",
+                  "en": "Try writing the same line from all three points of view. Notice which one makes you want to keep going."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-3",
+            "slug": "latihan-object-writing",
+            "kind": "exercise",
+            "title": {
+              "id": "Latihan: sepuluh menit object writing",
+              "en": "Practice: ten minutes of object writing"
+            },
+            "minutes": 10,
+            "completion": { "kind": "timer", "seconds": 600 },
+            "tool": {
+              "kind": "objectWriting",
+              "mode": "embed",
+              "config": {
+                "seconds": 600,
+                "prompt": {
+                  "id": "Ambil satu kata di bawah, nyalakan timer, lalu tulis tanpa berhenti sampai waktunya habis. Sentuh sebanyak mungkin indra.",
+                  "en": "Take one word below, start the timer, then write without stopping until time runs out. Touch as many senses as you can."
+                }
+              }
+            },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Sekarang giliranmu. Latihan ini dianggap selesai kalau timer sepuluh menit benar-benar habis — jadi tulis saja, sejelek apa pun hasilnya.",
+                  "en": "Your turn. This exercise counts as done when the ten-minute timer actually runs out — so just write, however rough it turns out."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Tulisanmu tersimpan di perangkat ini saja. Kalau mau menyimpannya lebih aman, salin ke catatanmu sendiri setelah selesai.",
+                  "en": "Your writing is saved on this device only. If you want to keep it safely, copy it into your own notes afterwards."
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "title": { "id": "Bentuk Lagu", "en": "Song Form" },
+        "summary": {
+          "id": "Setiap bagian lagu punya tugas. Kalau tugasnya jelas, pendengar tidak tersesat.",
+          "en": "Every section of a song has a job. When the jobs are clear, listeners never get lost."
+        },
+        "items": [
+          {
+            "id": "lyr-4",
+            "slug": "bagian-lagu",
+            "kind": "lesson",
+            "title": {
+              "id": "Verse, chorus, bridge — dan tugasnya",
+              "en": "Verse, chorus, bridge — and their jobs"
+            },
+            "minutes": 9,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Bentuk lagu bukan aturan kaku, tapi kesepakatan yang sudah dikenal telinga pendengar. Memakainya membuat lagumu mudah diikuti; melanggarnya jadi berarti kalau kamu tahu apa yang kamu langgar.",
+                  "en": "Song form is not a rigid rule, it is an agreement your listener's ear already knows. Using it makes your song easy to follow; breaking it means something only when you know what you are breaking."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Verse — membawa cerita dan detail baru. Liriknya berganti tiap kali.", "en": "Verse — carries the story and new detail. Its words change each time." },
+                  { "id": "Chorus — inti lagu, kalimat yang ingin diingat orang. Biasanya sama persis setiap kali.", "en": "Chorus — the heart of the song, the line you want remembered. Usually identical each time." },
+                  { "id": "Pre-chorus — jembatan pendek yang menaikkan tekanan sebelum chorus.", "en": "Pre-chorus — a short ramp that raises tension before the chorus." },
+                  { "id": "Bridge — sudut pandang baru atau kejutan, muncul sekali saja.", "en": "Bridge — a new angle or a surprise, appearing only once." }
+                ]
+              },
+              {
+                "type": "example",
+                "text": {
+                  "id": "Bentuk paling umum: Verse 1 – Chorus – Verse 2 – Chorus – Bridge – Chorus. Coba dengarkan tiga lagu favoritmu dan tandai bagian-bagiannya.",
+                  "en": "The most common form: Verse 1 – Chorus – Verse 2 – Chorus – Bridge – Chorus. Try listening to three favourite songs and marking the sections."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-5",
+            "slug": "jumlah-baris",
+            "kind": "lesson",
+            "title": {
+              "id": "Jumlah baris: seimbang vs menggantung",
+              "en": "Number of lines: balanced vs unbalanced"
+            },
+            "minutes": 8,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Bagian dengan jumlah baris genap (dua, empat) terasa selesai dan tenang. Jumlah ganjil (tiga, lima) terasa menggantung — telinga menunggu sesuatu yang belum datang.",
+                  "en": "A section with an even number of lines (two, four) feels settled and calm. An odd number (three, five) feels unfinished — the ear waits for something that has not arrived."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Manfaatkan itu. Kalau verse-mu harus menarik pendengar masuk ke chorus, buat menggantung. Kalau chorus-mu harus terasa seperti pernyataan, buat seimbang.",
+                  "en": "Use that. If your verse needs to pull the listener into the chorus, leave it unbalanced. If your chorus should land like a statement, keep it balanced."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Ambil verse yang sudah kamu tulis, tambahkan atau buang satu baris, lalu baca ulang keras-keras. Perhatikan perubahan rasanya.",
+                  "en": "Take a verse you have written, add or remove one line, then read it aloud again. Notice how the feeling changes."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-6",
+            "slug": "latihan-verse-chorus",
+            "kind": "exercise",
+            "title": {
+              "id": "Latihan: tulis satu verse dan satu chorus",
+              "en": "Practice: write one verse and one chorus"
+            },
+            "minutes": 15,
+            "completion": { "kind": "manual" },
+            "tool": {
+              "kind": "check",
+              "mode": "link",
+              "config": {
+                "prompt": {
+                  "id": "Sudah selesai menulis? Tempel liriknya di Periksa Ejaan untuk melihat kesalahan yang terlewat.",
+                  "en": "Finished writing? Paste your lyric into Spell Check to catch anything you missed."
+                }
+              }
+            },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Pakai bahan dari object writing-mu di modul satu. Tulis satu verse empat baris yang membawa detail, lalu satu chorus dua atau empat baris yang merangkum perasaannya.",
+                  "en": "Use the material from your object writing in module one. Write one four-line verse carrying the detail, then a two- or four-line chorus that sums up the feeling."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Verse: minimal tiga detail yang bisa dilihat, didengar, atau disentuh.", "en": "Verse: at least three details you can see, hear, or touch." },
+                  { "id": "Chorus: satu kalimat yang ingin kamu dengar orang nyanyikan.", "en": "Chorus: one line you would want people to sing back." },
+                  { "id": "Baca keras-keras. Kalau tersandung saat membaca, perbaiki barisnya.", "en": "Read it aloud. If you stumble while reading, fix that line." }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "title": { "id": "Rima & Bunyi", "en": "Rhyme & Sound" },
+        "summary": {
+          "id": "Rima bukan soal kata yang sama bunyinya, tapi soal seberapa kuat kamu ingin sebuah baris terasa selesai.",
+          "en": "Rhyme is not about words that sound the same — it is about how finished you want a line to feel."
+        },
+        "items": [
+          {
+            "id": "lyr-7",
+            "slug": "rima-sempurna-dan-keluarga",
+            "kind": "lesson",
+            "title": {
+              "id": "Rima sempurna dan rima keluarga",
+              "en": "Perfect rhyme and family rhyme"
+            },
+            "minutes": 10,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Rima sempurna adalah dua kata yang bunyinya sama persis mulai dari vokal bertekanan: \"jalan\" dan \"pelan\", \"hati\" dan \"pagi\". Bunyinya rapat, dan telinga langsung merasa baris itu selesai.",
+                  "en": "A perfect rhyme is two words that sound identical from the stressed vowel onward: \"light\" and \"night\", \"stay\" and \"away\". The match is tight, and the ear feels the line close."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Masalahnya, rasa selesai itu tidak selalu kamu butuhkan. Kalau setiap baris ditutup rapat, lagumu bisa terdengar seperti pantun: rapi, tapi tidak mendorong pendengar ke baris berikutnya.",
+                  "en": "The problem is that you do not always want the line to close. If every line shuts tight, the song can sound like a nursery rhyme: neat, but it never pushes the listener into the next line."
+                }
+              },
+              {
+                "type": "heading",
+                "text": { "id": "Rima keluarga", "en": "Family rhyme" }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Rima keluarga memakai konsonan yang \"bersaudara\" — bunyi yang dibentuk mulut dengan cara mirip. Misalnya b dan p, d dan t, m dan n. \"Sebab\" dan \"tetap\" bukan rima sempurna, tapi telinga tetap mendengar hubungannya, hanya lebih longgar.",
+                  "en": "Family rhyme uses consonants that are relatives — sounds your mouth makes in a similar way. For example b and p, d and t, m and n. \"Alone\" and \"home\" is not a perfect rhyme, yet the ear still hears the relationship, only looser."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Butuh baris terasa tuntas (biasanya akhir chorus)? Pakai rima sempurna.", "en": "Need a line to feel finished (usually the end of a chorus)? Use perfect rhyme." },
+                  { "id": "Butuh pendengar terus bergerak maju? Pakai rima keluarga atau rima miring.", "en": "Need the listener to keep moving forward? Use family or slant rhyme." },
+                  { "id": "Tidak ada kata yang pas? Ganti kata di baris pertama, bukan memaksa baris kedua.", "en": "No word fits? Change the word in the first line instead of forcing the second." }
+                ]
+              },
+              {
+                "type": "example",
+                "text": {
+                  "id": "\"Kopi di meja sudah dingin / aku masih duduk di sini\" — bukan rima sempurna, tapi bunyi \"in\" dan \"i\" cukup dekat untuk mengikat dua baris tanpa menutupnya.",
+                  "en": "\"The coffee on the table has gone cold / I am still sitting where I sat\" — no perfect rhyme, but the vowel colours are close enough to tie the lines without closing them."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Kalau kata yang kamu cari terasa dipaksakan, pendengar akan ikut merasa dipaksa. Lebih baik longgar dan jujur daripada rapat tapi janggal.",
+                  "en": "If the word you reach for feels forced, the listener feels forced too. Loose and honest beats tight and awkward."
+                }
+              },
+              {
+                "type": "quote",
+                "text": {
+                  "id": "Rima adalah rem dan gas. Kamu yang memutuskan kapan lagumu berhenti dan kapan melaju.",
+                  "en": "Rhyme is your brake and your accelerator. You decide when the song stops and when it moves."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-8",
+            "slug": "asonansi-konsonansi",
+            "kind": "lesson",
+            "title": {
+              "id": "Asonansi dan konsonansi",
+              "en": "Assonance and consonance"
+            },
+            "minutes": 8,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Asonansi: vokalnya sama, konsonannya beda — \"malam\" dan \"tajam\". Konsonansi: konsonannya sama, vokalnya beda — \"pulang\" dan \"peluang\". Keduanya mengikat baris dengan sangat longgar.",
+                  "en": "Assonance: same vowel, different consonants — \"stone\" and \"smoke\". Consonance: same consonants, different vowel — \"home\" and \"ham\". Both tie lines together very loosely."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Karena ikatannya longgar, bunyi ini berguna di tengah verse: pendengar merasa ada pola, tapi belum merasa boleh berhenti.",
+                  "en": "Because the tie is loose, these are useful in the middle of a verse: the listener senses a pattern but does not yet feel allowed to stop."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Bunyi di dalam baris juga berpengaruh, bukan cuma di ujung. Pengulangan vokal di tengah kalimat bisa membuat satu baris terasa menyatu.",
+                  "en": "Sound inside the line matters too, not just at the end. Repeated vowels mid-line can make a line feel like one piece."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-9",
+            "slug": "latihan-cari-rima",
+            "kind": "exercise",
+            "title": {
+              "id": "Latihan: cari rima untuk lirikmu",
+              "en": "Practice: find rhymes for your lyric"
+            },
+            "minutes": 10,
+            "completion": { "kind": "manual" },
+            "tool": {
+              "kind": "rhyme",
+              "mode": "embed",
+              "config": {
+                "prompt": {
+                  "id": "Ketik kata terakhir dari salah satu barismu, lalu lihat pilihan rima sempurna dan rima miripnya.",
+                  "en": "Type the last word of one of your lines, then look at the perfect and near rhyme options."
+                }
+              }
+            },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Ambil verse yang kamu tulis di modul dua. Cari tiga pilihan rima untuk baris terakhirnya: satu rima sempurna, satu rima mirip, dan satu yang menurutmu terlalu dipaksakan.",
+                  "en": "Take the verse you wrote in module two. Find three rhyme options for its last line: one perfect rhyme, one near rhyme, and one you think is too forced."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Bandingkan ketiganya dengan membaca keras. Yang \"terlalu dipaksakan\" tadi berguna sebagai pembanding — kamu jadi tahu batasnya di mana.",
+                  "en": "Compare all three by reading aloud. The \"too forced\" one is useful as a benchmark — it shows you where the limit is."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-q1",
+            "slug": "kuis-rima",
+            "kind": "quiz",
+            "title": { "id": "Kuis: rima & bunyi", "en": "Quiz: rhyme & sound" },
+            "minutes": 3,
+            "completion": { "kind": "quiz" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Tiga pertanyaan singkat untuk mengecek modul ini. Jawaban salah boleh diulang.",
+                  "en": "Three short questions to check this module. You can retry a wrong answer."
+                }
+              }
+            ],
+            "quiz": [
+              {
+                "id": "q1",
+                "question": {
+                  "id": "Kapan rima sempurna paling berguna?",
+                  "en": "When is a perfect rhyme most useful?"
+                },
+                "options": [
+                  { "id": "Saat kamu ingin baris terasa selesai, misalnya di akhir chorus", "en": "When you want a line to feel finished, such as the end of a chorus" },
+                  { "id": "Di setiap akhir baris, tanpa kecuali", "en": "At the end of every single line, without exception" },
+                  { "id": "Hanya di bridge", "en": "Only in the bridge" }
+                ],
+                "answerIndex": 0,
+                "explanation": {
+                  "id": "Rima sempurna menutup baris. Dipakai terus-menerus, lagumu kehilangan dorongan maju.",
+                  "en": "Perfect rhyme closes a line. Used constantly, your song loses its forward push."
+                }
+              },
+              {
+                "id": "q2",
+                "question": {
+                  "id": "\"Malam\" dan \"tajam\" adalah contoh dari?",
+                  "en": "\"Stone\" and \"smoke\" is an example of?"
+                },
+                "options": [
+                  { "id": "Rima sempurna", "en": "Perfect rhyme" },
+                  { "id": "Asonansi", "en": "Assonance" },
+                  { "id": "Tidak ada hubungan bunyi", "en": "No sound relationship at all" }
+                ],
+                "answerIndex": 1,
+                "explanation": {
+                  "id": "Vokalnya sama, konsonannya berbeda — itu asonansi.",
+                  "en": "Same vowel, different consonants — that is assonance."
+                }
+              },
+              {
+                "id": "q3",
+                "question": {
+                  "id": "Kata rimanya terasa dipaksakan. Apa langkah pertama yang paling baik?",
+                  "en": "Your rhyme word feels forced. What is the best first move?"
+                },
+                "options": [
+                  { "id": "Biarkan saja, pendengar tidak akan sadar", "en": "Leave it, listeners will not notice" },
+                  { "id": "Ganti kata di baris pertama supaya pilihannya lebih banyak", "en": "Change the word in the first line so you have more options" },
+                  { "id": "Hapus rimanya sama sekali dari lagu", "en": "Remove rhyme from the song entirely" }
+                ],
+                "answerIndex": 1,
+                "explanation": {
+                  "id": "Baris pertama yang menentukan pilihan. Mengubahnya membuka banyak kemungkinan baru.",
+                  "en": "The first line sets your options. Changing it opens up many new possibilities."
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "title": { "id": "Ritme & Prosodi", "en": "Rhythm & Prosody" },
+        "summary": {
+          "id": "Bagian terakhir: mencocokkan tekanan kata dengan musiknya, lalu menyelesaikan lagumu.",
+          "en": "The last stretch: matching word stress to the music, then finishing your song."
+        },
+        "items": [
+          {
+            "id": "lyr-10",
+            "slug": "suku-kata-dan-tekanan",
+            "kind": "lesson",
+            "title": {
+              "id": "Suku kata dan tekanan kata",
+              "en": "Syllables and word stress"
+            },
+            "minutes": 9,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Setiap kata punya suku kata yang lebih kuat. Kalau suku kata kuat itu jatuh di ketukan lemah lagu, liriknya terdengar janggal — seolah penyanyinya salah mengucapkan.",
+                  "en": "Every word has a syllable that carries more weight. When that strong syllable lands on a weak beat, the lyric sounds off — as if the singer mispronounced it."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Cara mengeceknya sederhana: ucapkan barismu seperti bicara biasa, lalu nyanyikan di atas ketukan. Kalau kamu harus memaksa mulut, ganti kata atau geser barisnya.",
+                  "en": "Checking is simple: say your line the way you would speak it, then sing it over the beat. If your mouth has to fight, change the word or move the line."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Fitur Rima di situs ini juga menampilkan pemenggalan suku kata — berguna saat kamu ragu menghitung.",
+                  "en": "The Rhyme tool on this site also shows syllable breaks — handy when you are unsure how to count."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-11",
+            "slug": "latihan-nyanyi-di-atas-chord",
+            "kind": "exercise",
+            "title": {
+              "id": "Latihan: nyanyikan lirikmu di atas chord",
+              "en": "Practice: sing your lyric over chords"
+            },
+            "minutes": 15,
+            "completion": { "kind": "manual" },
+            "tool": {
+              "kind": "chordPad",
+              "mode": "embed",
+              "config": {
+                "keyRoot": 0,
+                "prompt": {
+                  "id": "Tekan pad untuk membunyikan chord. Mulai dari empat chord pertama, ulangi terus, lalu nyanyikan verse-mu di atasnya.",
+                  "en": "Press a pad to play a chord. Start with the first four, loop them, then sing your verse over the top."
+                }
+              }
+            },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Lirik baru benar-benar teruji saat dinyanyikan. Pakai pad di bawah untuk memainkan chord sederhana, lalu nyanyikan verse dan chorus-mu di atasnya.",
+                  "en": "A lyric is only really tested when it is sung. Use the pad below to play simple chords, then sing your verse and chorus over them."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Di mana kamu kehabisan napas? Baris itu terlalu panjang.", "en": "Where do you run out of breath? That line is too long." },
+                  { "id": "Kata mana yang terdengar aneh saat dinyanyikan? Tekanannya mungkin salah tempat.", "en": "Which word sounds strange when sung? Its stress is probably in the wrong place." },
+                  { "id": "Bagian mana yang ingin kamu ulang? Itu kandidat chorus-mu.", "en": "Which part do you want to repeat? That is your chorus candidate." }
+                ]
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Pakai headphone atau pastikan suara perangkat menyala. Kalau ingin fitur lengkap (metronom, groove drum, preset), buka halaman Chord Pad.",
+                  "en": "Use headphones, or make sure your device sound is on. For the full features (metronome, drum grooves, presets), open the Chord Pad page."
+                }
+              }
+            ]
+          },
+          {
+            "id": "lyr-12",
+            "slug": "revisi-dan-selesaikan",
+            "kind": "lesson",
+            "title": {
+              "id": "Revisi dan selesaikan lagumu",
+              "en": "Revise and finish your song"
+            },
+            "minutes": 12,
+            "prerequisites": ["lyr-9", "lyr-11"],
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Revisi bukan menghapus yang jelek, tapi memperjelas yang ingin kamu katakan. Mulai dari pertanyaan besar, baru turun ke kata per kata.",
+                  "en": "Revision is not deleting the bad parts; it is sharpening what you meant to say. Start with the big questions, then work down to single words."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Apa satu kalimat inti lagu ini? Kalau belum bisa dijawab, chorus-mu belum selesai.", "en": "What is the one line this song is about? If you cannot answer, the chorus is not done." },
+                  { "id": "Adakah baris yang mengulang informasi yang sudah ada? Buang.", "en": "Any line repeating information we already have? Cut it." },
+                  { "id": "Adakah kata umum (sedih, indah, selamanya) yang bisa diganti detail konkret?", "en": "Any vague word (sad, beautiful, forever) you can swap for concrete detail?" },
+                  { "id": "Baca keras dari awal. Tandai setiap tempat kamu tersandung.", "en": "Read it aloud from the top. Mark every place you stumble." }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Terakhir: bawa lagumu ke sesi mingguan ESC dan nyanyikan di depan teman-teman. Telinga orang lain menemukan hal yang tidak kamu dengar sendiri.",
+                  "en": "Finally: bring your song to the weekly ESC session and play it for the others. Someone else's ears will catch what yours cannot."
+                }
+              },
+              {
+                "type": "quote",
+                "text": {
+                  "id": "Lagu tidak pernah benar-benar selesai — kamu hanya memutuskan kapan berhenti mengubahnya.",
+                  "en": "A song is never truly finished — you just decide when to stop changing it."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "object-writing-101",
+    "title": { "id": "Object Writing 101", "en": "Object Writing 101" },
+    "summary": {
+      "id": "Kebiasaan sepuluh menit yang jadi sumber bahan lirikmu. Kursus pendek — boleh dimulai dari bagian mana saja.",
+      "en": "The ten-minute habit that feeds every lyric you write. A short course — start anywhere you like."
+    },
+    "level": "beginner",
+    "progression": "free",
+    "accent": "#9fd8c8",
+    "icon": "🕯️",
+    "outcomes": [
+      {
+        "id": "Menjadikan object writing kebiasaan harian.",
+        "en": "Make object writing a daily habit."
+      },
+      {
+        "id": "Menulis dengan tujuh indra, bukan hanya penglihatan.",
+        "en": "Write with all seven senses, not just sight."
+      },
+      {
+        "id": "Mengubah catatan mentah jadi baris lirik.",
+        "en": "Turn raw notes into lyric lines."
+      }
+    ],
+    "modules": [
+      {
+        "id": "ow-m1",
+        "title": { "id": "Dasarnya", "en": "The Basics" },
+        "items": [
+          {
+            "id": "ow-1",
+            "slug": "kenapa-object-writing",
+            "kind": "lesson",
+            "title": {
+              "id": "Kenapa sepuluh menit saja?",
+              "en": "Why only ten minutes?"
+            },
+            "minutes": 6,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Sepuluh menit cukup pendek untuk dilakukan setiap hari, dan cukup panjang untuk melewati ide-ide pertama yang biasanya paling umum. Menit ketujuh sampai kesepuluh sering jadi bagian paling menarik.",
+                  "en": "Ten minutes is short enough to do daily, and long enough to get past your first ideas, which are usually the most ordinary. Minutes seven to ten are often where it gets interesting."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Lakukan di jam yang sama setiap hari. Kebiasaan lebih penting daripada hasil satu sesi.",
+                  "en": "Do it at the same time each day. The habit matters more than any single session."
+                }
+              }
+            ]
+          },
+          {
+            "id": "ow-2",
+            "slug": "tujuh-indra",
+            "kind": "lesson",
+            "title": { "id": "Menulis dengan tujuh indra", "en": "Writing with seven senses" },
+            "minutes": 7,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Kebanyakan orang menulis dengan mata saja. Padahal bau dan tekstur sering memicu ingatan jauh lebih kuat daripada gambar.",
+                  "en": "Most people write with their eyes only. Yet smell and texture often trigger memory far more strongly than images."
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "id": "Penglihatan, pendengaran, penciuman, pengecapan, perabaan", "en": "Sight, sound, smell, taste, touch" },
+                  { "id": "Rasa tubuh — detak, napas, perut", "en": "Body sense — pulse, breath, stomach" },
+                  { "id": "Gerak — apa yang bergerak, dan seberapa cepat", "en": "Motion — what moves, and how fast" }
+                ]
+              },
+              {
+                "type": "example",
+                "text": {
+                  "id": "Benda: payung basah. Bukan hanya \"warnanya biru\", tapi juga bau plastik yang lembap, bunyi tetes di lantai, dan dingin gagangnya di telapak.",
+                  "en": "Object: a wet umbrella. Not only \"it is blue\", but the damp plastic smell, the drip on the floor, the cold handle in your palm."
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ow-m2",
+        "title": { "id": "Praktik", "en": "Practice" },
+        "items": [
+          {
+            "id": "ow-3",
+            "slug": "latihan-sepuluh-menit",
+            "kind": "exercise",
+            "title": { "id": "Latihan harian sepuluh menit", "en": "The daily ten-minute practice" },
+            "minutes": 10,
+            "completion": { "kind": "timer", "seconds": 600 },
+            "tool": {
+              "kind": "objectWriting",
+              "mode": "embed",
+              "config": {
+                "seconds": 600,
+                "prompt": {
+                  "id": "Pilih kata, nyalakan timer, tulis tanpa berhenti.",
+                  "en": "Pick a word, start the timer, write without stopping."
+                }
+              }
+            },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Tidak ada aturan lain: jangan berhenti, jangan menghapus, jangan menilai. Kalau buntu, tulis ulang kalimat terakhirmu sampai ide berikutnya datang.",
+                  "en": "No other rules: do not stop, do not delete, do not judge. If you get stuck, rewrite your last sentence until the next idea arrives."
+                }
+              }
+            ]
+          },
+          {
+            "id": "ow-4",
+            "slug": "dari-catatan-ke-lirik",
+            "kind": "lesson",
+            "title": { "id": "Dari catatan mentah ke lirik", "en": "From raw notes to lyric" },
+            "minutes": 8,
+            "completion": { "kind": "manual" },
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Buka catatan object writing-mu minggu lalu. Garis bawahi tiga frasa yang masih terasa hidup saat dibaca ulang — biasanya yang paling spesifik.",
+                  "en": "Open your object writing notes from last week. Underline three phrases that still feel alive when you reread them — usually the most specific ones."
+                }
+              },
+              {
+                "type": "paragraph",
+                "text": {
+                  "id": "Tiga frasa itu bahan bakumu. Susun jadi dua baris, lalu cari satu baris ketiga yang menjelaskan kenapa detail itu penting bagimu.",
+                  "en": "Those three phrases are your raw material. Shape them into two lines, then find a third line that says why the detail matters to you."
+                }
+              },
+              {
+                "type": "tip",
+                "text": {
+                  "id": "Detail yang sangat pribadi justru paling mudah dikenali orang lain. Jangan buru-buru membuatnya umum.",
+                  "en": "The most personal detail is often the most recognisable to others. Do not rush to make it general."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

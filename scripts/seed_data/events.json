@@ -1,0 +1,303 @@
+[
+  {
+    "id": "ev-1",
+    "slug": "sesi-mingguan-object-writing",
+    "kind": "weekly",
+    "title": {
+      "id": "Sesi Mingguan: Object Writing",
+      "en": "Weekly Session: Object Writing"
+    },
+    "summary": {
+      "id": "Menulis bareng selama sepuluh menit, lalu saling membacakan hasilnya.",
+      "en": "Ten minutes of writing together, then reading the results to each other."
+    },
+    "date": "2026-09-19",
+    "startTime": "16:00",
+    "endTime": "18:00",
+    "isHoliday": false,
+    "price": null,
+    "venue": {
+      "name": "Earhouse",
+      "address": {
+        "id": "Earhouse Songwriting Club, Tangerang Selatan",
+        "en": "Earhouse Songwriting Club, South Tangerang"
+      },
+      "lat": -6.3403526,
+      "lng": 106.7281456
+    },
+    "images": [{ "url": "/sample/event-session.svg" }],
+    "links": [
+      {
+        "kind": "info",
+        "label": { "id": "Cara ikut sesi", "en": "How to join a session" },
+        "url": "https://linktr.ee/earhouse"
+      }
+    ],
+    "description": [
+      {
+        "type": "paragraph",
+        "text": {
+          "id": "Sesi rutin tiap minggu. Kita mulai dengan object writing sepuluh menit, lalu siapa pun yang mau boleh membacakan tulisannya. Tidak ada penilaian, tidak ada kewajiban tampil.",
+          "en": "Our regular weekly session. We start with ten minutes of object writing, then anyone who wants to can read theirs out. No judging, no obligation to perform."
+        }
+      },
+      {
+        "type": "list",
+        "items": [
+          { "id": "Bawa alat tulis atau laptop.", "en": "Bring something to write with." },
+          { "id": "Datang sepuluh menit lebih awal untuk absen.", "en": "Arrive ten minutes early to check in." },
+          { "id": "Terbuka untuk anggota baru.", "en": "Open to new members." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev-2",
+    "slug": "sesi-mingguan-menulis-chorus",
+    "kind": "weekly",
+    "title": {
+      "id": "Sesi Mingguan: Menulis Chorus",
+      "en": "Weekly Session: Writing Choruses"
+    },
+    "summary": {
+      "id": "Latihan menulis chorus yang mudah diingat, lalu dites bareng-bareng.",
+      "en": "Practising choruses people remember, then testing them together."
+    },
+    "date": "2026-09-26",
+    "startTime": "16:00",
+    "endTime": "18:00",
+    "isHoliday": false,
+    "price": null,
+    "venue": {
+      "name": "Earhouse",
+      "address": {
+        "id": "Earhouse Songwriting Club, Tangerang Selatan",
+        "en": "Earhouse Songwriting Club, South Tangerang"
+      },
+      "lat": -6.3403526,
+      "lng": 106.7281456
+    },
+    "images": [{ "url": "/sample/event-session.svg" }],
+    "links": [
+      {
+        "kind": "info",
+        "label": { "id": "Cara ikut sesi", "en": "How to join a session" },
+        "url": "https://linktr.ee/earhouse"
+      }
+    ],
+    "description": [
+      {
+        "type": "paragraph",
+        "text": {
+          "id": "Fokus minggu ini: chorus. Kita bedah apa yang membuat satu kalimat mudah menempel di kepala, lalu masing-masing menulis dua versi chorus dari ide yang sama.",
+          "en": "This week's focus: the chorus. We look at what makes one line stick in your head, then everyone writes two chorus versions of the same idea."
+        }
+      },
+      {
+        "type": "tip",
+        "text": {
+          "id": "Kalau kamu sedang mengerjakan lagu, bawa liriknya — kita bisa bahas di tempat.",
+          "en": "If you are working on a song, bring the lyric — we can look at it on the spot."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ev-3",
+    "slug": "workshop-lirik-dari-ide-ke-lagu",
+    "kind": "workshop",
+    "title": {
+      "id": "Workshop: Dari Ide ke Lagu",
+      "en": "Workshop: From Idea to Song"
+    },
+    "summary": {
+      "id": "Workshop setengah hari: mengubah satu catatan object writing jadi lagu utuh.",
+      "en": "A half-day workshop: turning one page of object writing into a finished song."
+    },
+    "date": "2026-10-10",
+    "startTime": "13:00",
+    "endTime": "17:00",
+    "isHoliday": false,
+    "price": { "amount": 150000, "currency": "IDR" },
+    "venue": {
+      "name": "Earhouse",
+      "address": {
+        "id": "Earhouse Songwriting Club, Tangerang Selatan",
+        "en": "Earhouse Songwriting Club, South Tangerang"
+      },
+      "lat": -6.3403526,
+      "lng": 106.7281456
+    },
+    "images": [
+      { "url": "/sample/event-workshop-1.svg" },
+      { "url": "/sample/event-workshop-2.svg" },
+      { "url": "/sample/event-session.svg" }
+    ],
+    "links": [
+      {
+        "kind": "ticket",
+        "label": { "id": "Beli tiket", "en": "Buy a ticket" },
+        "url": "https://linktr.ee/earhouse"
+      },
+      {
+        "kind": "register",
+        "label": { "id": "Daftar (Google Form)", "en": "Register (Google Form)" },
+        "url": "https://linktr.ee/earhouse"
+      },
+      {
+        "kind": "info",
+        "label": { "id": "Susunan acara", "en": "Full schedule" },
+        "url": "https://linktr.ee/earhouse"
+      }
+    ],
+    "description": [
+      {
+        "type": "paragraph",
+        "text": {
+          "id": "Empat jam, satu lagu. Kita mulai dari catatan object writing, memilih detail terkuatnya, menyusun bentuk lagu, lalu menyanyikannya di depan peserta lain pada jam terakhir.",
+          "en": "Four hours, one song. We start from object writing notes, pick the strongest detail, build the song form, then perform it for the other participants in the final hour."
+        }
+      },
+      {
+        "type": "heading",
+        "text": { "id": "Untuk siapa?", "en": "Who is it for?" }
+      },
+      {
+        "type": "list",
+        "items": [
+          { "id": "Pemula yang belum pernah menyelesaikan satu lagu pun.", "en": "Beginners who have never finished a song." },
+          { "id": "Penulis lagu yang sering mentok di verse kedua.", "en": "Writers who always get stuck on the second verse." },
+          { "id": "Kuota terbatas 20 orang.", "en": "Limited to 20 people." }
+        ]
+      },
+      {
+        "type": "tip",
+        "text": {
+          "id": "Bawa alat musik kalau punya. Kalau tidak, tersedia gitar dan keyboard di tempat.",
+          "en": "Bring an instrument if you have one. If not, there are guitars and a keyboard on site."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ev-4",
+    "slug": "libur-sesi-mingguan",
+    "kind": "holiday",
+    "title": { "id": "Libur: tidak ada sesi", "en": "Closed: no session" },
+    "summary": {
+      "id": "Sesi mingguan diliburkan. Sampai jumpa minggu depan.",
+      "en": "The weekly session is off this week. See you next week."
+    },
+    "date": "2026-10-17",
+    "startTime": "16:00",
+    "endTime": "18:00",
+    "isHoliday": true,
+    "price": null,
+    "images": [],
+    "links": [],
+    "description": [
+      {
+        "type": "paragraph",
+        "text": {
+          "id": "Tidak ada sesi dan tidak ada absensi minggu ini. Pakai waktunya untuk object writing sendiri di rumah.",
+          "en": "No session and no attendance this week. Use the time for your own object writing at home."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ev-5",
+    "slug": "open-mic-showcase",
+    "kind": "showcase",
+    "title": { "id": "Open Mic: Lagu Baru", "en": "Open Mic: New Songs" },
+    "summary": {
+      "id": "Malam penampilan untuk lagu yang lahir dari sesi-sesi terakhir.",
+      "en": "A performance night for songs born in recent sessions."
+    },
+    "date": "2026-10-24",
+    "startTime": "19:00",
+    "endTime": "22:00",
+    "isHoliday": false,
+    "price": null,
+    "venue": {
+      "name": "Earhouse",
+      "address": {
+        "id": "Earhouse Songwriting Club, Tangerang Selatan",
+        "en": "Earhouse Songwriting Club, South Tangerang"
+      },
+      "lat": -6.3403526,
+      "lng": 106.7281456
+    },
+    "images": [
+      { "url": "/sample/event-openmic-1.svg" },
+      { "url": "/sample/event-openmic-2.svg" }
+    ],
+    "links": [
+      {
+        "kind": "register",
+        "label": { "id": "Daftar tampil", "en": "Sign up to perform" },
+        "url": "https://linktr.ee/earhouse"
+      }
+    ],
+    "description": [
+      {
+        "type": "paragraph",
+        "text": {
+          "id": "Tiap penampil membawakan dua lagu, satu di antaranya harus lagu yang belum pernah dimainkan di depan orang. Penonton gratis, tanpa perlu daftar.",
+          "en": "Each performer plays two songs, one of which must be a song never played in front of people before. Free for the audience, no sign-up needed."
+        }
+      },
+      {
+        "type": "quote",
+        "text": {
+          "id": "Lagu yang masih setengah jadi tetap boleh dibawakan. Justru di situ serunya.",
+          "en": "Half-finished songs are welcome. That is the fun part."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ev-6",
+    "slug": "sesi-mingguan-revisi-lirik",
+    "kind": "weekly",
+    "title": {
+      "id": "Sesi Mingguan: Revisi Lirik",
+      "en": "Weekly Session: Lyric Revision"
+    },
+    "summary": {
+      "id": "Bawa lirik yang belum selesai, pulang dengan versi yang lebih tajam.",
+      "en": "Bring an unfinished lyric, leave with a sharper version."
+    },
+    "date": "2026-10-31",
+    "startTime": "16:00",
+    "endTime": "18:00",
+    "isHoliday": false,
+    "price": null,
+    "venue": {
+      "name": "Earhouse",
+      "address": {
+        "id": "Earhouse Songwriting Club, Tangerang Selatan",
+        "en": "Earhouse Songwriting Club, South Tangerang"
+      },
+      "lat": -6.3403526,
+      "lng": 106.7281456
+    },
+    "images": [{ "url": "/sample/event-session.svg" }],
+    "links": [
+      {
+        "kind": "info",
+        "label": { "id": "Cara ikut sesi", "en": "How to join a session" },
+        "url": "https://linktr.ee/earhouse"
+      }
+    ],
+    "description": [
+      {
+        "type": "paragraph",
+        "text": {
+          "id": "Kita bedah lirik peserta satu per satu: mana baris yang mengulang, mana kata umum yang bisa diganti detail, dan di mana pendengar kehilangan arah.",
+          "en": "We work through participants' lyrics one by one: which lines repeat, which vague words can become detail, and where the listener loses the thread."
+        }
+      }
+    ]
+  }
+]

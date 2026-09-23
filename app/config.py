@@ -15,11 +15,14 @@ class Settings(BaseSettings):
 
     member_frontend_url: str = "http://localhost:3001"
     dashboard_frontend_url: str = "http://localhost:3002"
+    # The public site signs in against the same API (one cookie, one session).
+    public_frontend_url: str = "http://localhost:3000"
 
     cookie_domain: str = ""  # empty = host-only cookie (localhost dev)
     cookie_secure: bool = False
 
     superadmin_emails: str = ""  # comma-separated
+
 
     timezone: str = "Asia/Jakarta"
     session_ttl_days: int = 30
@@ -30,7 +33,11 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> list[str]:
-        return [self.member_frontend_url, self.dashboard_frontend_url]
+        return [
+            self.member_frontend_url,
+            self.dashboard_frontend_url,
+            self.public_frontend_url,
+        ]
 
 
 @lru_cache

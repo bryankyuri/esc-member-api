@@ -25,6 +25,7 @@ from app.db import engine
 log = logging.getLogger("uvicorn.error")
 
 BASELINE = "0001_baseline"
+UUID_REVISION = "0002_uuid_pks"
 API_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -42,8 +43,16 @@ def run_migrations() -> None:
 
     if "users" in tables and "alembic_version" not in tables:
         # Pre-Alembic database: record where it already is, then move forward.
-        log.info("existing schema without alembic_version — stamping %s", BASELINE)
-        command.stamp(cfg, BASELINE)
+        # Which revision it is at depends on whether the ids were already
+        # converted (e.g. by scripts/migrate_uuid.py) — stamping the baseline
+        # in that case would re-run 0002 and needlessly rewrite every id.
+        id_type = ""
+        for col in inspector.get_columns("users"):
+            if col["name"] == "id":
+                id_type = str(col["type"]).upper()
+        revision = UUID_REVISION if "CHAR" in id_type else BASELINE
+        log.info("existing schema without alembic_version — stamping %s", revision)
+        command.stamp(cfg, revision)
 
     command.upgrade(cfg, "head")
     log.info("database schema is up to date")

@@ -10,9 +10,11 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.deps import api_error, effective_role, require_admin
+from app.deps import api_error, effective_role, is_member, require_admin
 from app.models import Activity, Attendance, User, Venue
 from app.schemas import (
+    EVENT_KINDS,
+    SLUG_RE,
     ActivityAdminOut,
     ActivityIn,
     AttendanceLogRowOut,
@@ -30,6 +32,7 @@ from app.schemas import (
 from app.services import (
     DEFAULT_SESSION_TITLE,
     get_app_settings,
+    membership_status,
     now_local,
     record_out,
     resolve_venue,
@@ -74,8 +77,14 @@ def overview(db: Session = Depends(get_db)):
     this_week = (
         db.query(Attendance).filter(Attendance.attended_at >= week_start).count()
     )
-    total_members = db.query(User).count()
-    active_members = db.query(User).filter(User.is_active.is_(True)).count()
+    # "Members" here means people who actually completed membership, not every
+    # signed-in account — the public site now creates `user` accounts too.
+    all_users = db.query(User).all()
+    statuses = [membership_status(db, u) for u in all_users]
+    total_members = sum(1 for s in statuses if s != "none")
+    active_members = statuses.count("active")
+    dormant_members = statuses.count("dormant")
+    registered_members = statuses.count("registered")
 
     per_session = (
         db.query(Attendance.activity_id, func.count(Attendance.id))
@@ -115,6 +124,8 @@ def overview(db: Session = Depends(get_db)):
         "this_week_count": this_week,
         "total_members": total_members,
         "active_members": active_members,
+        "dormant_members": dormant_members,
+        "registered_members": registered_members,
         "average_per_session": average,
         "monthly_trend": trend,
         "recent_checkins": [_log_row(db, r) for r in recent],
@@ -212,7 +223,12 @@ def _member_row(db: Session, user: User) -> dict:
         "whatsapp": user.whatsapp,
         "domicile": user.domicile,
         "instagram": user.instagram,
+        # Two separate ideas, two separate columns in the UI: what they may
+        # manage (role) and how alive their membership is (status).
         "role": effective_role(user),
+        "is_member": is_member(user),
+        "membership_status": membership_status(db, user),
+        "member_since": user.member_since.isoformat() if user.member_since else None,
         "is_active": user.is_active,
         "profile_completed": user.profile_completed,
         "total_attendance": total or 0,
@@ -222,9 +238,17 @@ def _member_row(db: Session, user: User) -> dict:
 
 
 @router.get("/members", response_model=list[MemberRowOut])
-def members(db: Session = Depends(get_db)):
+def members(
+    status: str | None = Query(
+        default=None, pattern=r"^(none|registered|active|dormant|disabled)$"
+    ),
+    db: Session = Depends(get_db),
+):
     users = db.query(User).order_by(User.full_name).all()
-    return [_member_row(db, u) for u in users]
+    rows = [_member_row(db, u) for u in users]
+    if status:
+        rows = [r for r in rows if r["membership_status"] == status]
+    return rows
 
 
 @router.get("/members/{member_id}", response_model=MemberRowOut)
@@ -261,6 +285,7 @@ def member_attendance(
 def update_member(
     member_id: str,
     payload: UpdateMemberIn,
+    actor: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ):
     user = db.get(User, member_id)
@@ -269,10 +294,21 @@ def update_member(
     # Superadmin is env-defined: its status/role can never change via API.
     if effective_role(user) == "superadmin":
         raise api_error(403, "forbidden", "superadmin is configured on the server")
+
+    if payload.role is not None:
+        # Granting or removing admin is superadmin-only. Without this an admin
+        # could demote every other admin, including the person who promoted
+        # them. Contributor is an ordinary admin decision.
+        touches_admin = payload.role == "admin" or user.role == "admin"
+        if touches_admin and effective_role(actor) != "superadmin":
+            raise api_error(
+                403, "forbidden", "only a superadmin can grant or revoke admin"
+            )
+        user.role = payload.role
+
     if payload.is_active is not None:
         user.is_active = payload.is_active
-    if payload.role is not None:
-        user.role = payload.role
+
     db.commit()
     return _member_row(db, user)
 
@@ -360,6 +396,31 @@ def _assert_no_duplicate_session(
         )
 
 
+def _validate_public(
+    db: Session, payload: ActivityIn, exclude_id: str | None = None
+) -> None:
+    """Checks that only matter once an activity faces the public."""
+    if payload.kind not in EVENT_KINDS:
+        raise api_error(422, "invalid_kind", f"one of {', '.join(EVENT_KINDS)}")
+
+    slug = (payload.public_slug or "").strip()
+    if slug:
+        if not SLUG_RE.match(slug):
+            raise api_error(
+                422, "invalid_slug", "lowercase letters, digits and hyphens"
+            )
+        clash = db.query(Activity).filter(Activity.public_slug == slug)
+        if exclude_id is not None:
+            clash = clash.filter(Activity.id != exclude_id)
+        if clash.first() is not None:
+            raise api_error(409, "slug_taken")
+
+    if payload.is_public and not payload.summary_id.strip():
+        # The calendar card is a title and a summary; publishing without one
+        # puts an empty card on the public site.
+        raise api_error(422, "summary_required", "a public activity needs a summary")
+
+
 @router.post("/activities", response_model=ActivityAdminOut, status_code=201)
 def create_activity(
     payload: ActivityIn,
@@ -367,7 +428,10 @@ def create_activity(
     admin: User = Depends(require_admin),
 ):
     _assert_no_duplicate_session(db, payload)
-    activity = Activity(**payload.model_dump(), created_by=admin.id)
+    _validate_public(db, payload)
+    values = payload.model_dump()
+    values["public_slug"] = (values.get("public_slug") or "").strip() or None
+    activity = Activity(**values, created_by=admin.id)
     db.add(activity)
     db.commit()
     return activity
@@ -377,11 +441,23 @@ def create_activity(
 def update_activity(
     activity_id: str, payload: ActivityIn, db: Session = Depends(get_db)
 ):
+    """A real partial update: only the fields the request actually sent.
+
+    This matters now that activities carry public-calendar content. A client
+    that knows nothing about images and links — the attendance-side forms, say
+    — must be able to move a workshop's start time without silently erasing
+    the carousel someone built.
+    """
     activity = db.get(Activity, activity_id)
     if activity is None:
         raise api_error(404, "unknown", "activity not found")
     _assert_no_duplicate_session(db, payload, exclude_id=activity_id)
-    for key, value in payload.model_dump().items():
+    _validate_public(db, payload, exclude_id=activity_id)
+
+    changes = payload.model_dump(exclude_unset=True)
+    if "public_slug" in changes:
+        changes["public_slug"] = (changes["public_slug"] or "").strip() or None
+    for key, value in changes.items():
         setattr(activity, key, value)
     db.commit()
     return activity

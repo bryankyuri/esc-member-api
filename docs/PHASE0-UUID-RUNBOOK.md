@@ -4,8 +4,8 @@ Status: **built and rehearsed 2026-09-23 on a sanitised copy of production
 (102 users, 183 attendance rows). Not yet run on the server.**
 
 What changes: every integer primary key becomes a **UUIDv7 string**, and the
-schema is handed over to **Alembic**. See `../../PLATFORM-V2-SDD.md` §2.5 for
-why.
+schema is handed over to **Alembic**. Specs: `../../PLATFORM-V2-SPEC.md`
+§3 (SPEC-ID-01 … SPEC-ID-04).
 
 ---
 
@@ -110,11 +110,26 @@ and affects admins only. No public URL contains a database id.
 
 ---
 
-## Known follow-ups (not part of Phase 0)
+## Phase 1 ships with this deploy
 
-- Frontends still send `role: "member" | "admin"`; the role rename to
-  `user | contributor | admin` is **Phase 1**.
-- Session tokens are still not rotated on login, and expired `auth_sessions`
-  rows are still never purged.
-- `datetime.utcnow()` is still used in several places (deprecated in newer
-  Python).
+Phase 1 (roles + membership status) is on the same branch, so the deploy
+applies **`0002_uuid_pks` then `0003_roles`** in order. Everything above still
+applies; the extra checks are:
+
+```bash
+docker exec -i esc-member-api-1 python -c "
+import sqlite3
+c=sqlite3.connect('/app/data/esc.db')
+print('version', c.execute('SELECT version_num FROM alembic_version').fetchone())
+print('roles', c.execute('SELECT role, count(*) FROM users GROUP BY role').fetchall())
+print('members', c.execute('SELECT count(*) FROM users WHERE security_passed=1 AND profile_completed=1').fetchone()[0])"
+```
+
+Expect `0003_roles`, roles of only `user`/`contributor`/`admin`, and the **same
+member count as before the deploy** (88 in the September data).
+
+**Deploy the API before the frontends** — the old dashboard build sends
+`role: "member"`, which the new API rejects with 422.
+
+Follow-ups now closed: session rotation on login, expired-session purge, and
+the deprecated `datetime.utcnow()` calls.

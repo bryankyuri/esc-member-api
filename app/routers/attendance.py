@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.deps import api_error, require_complete_profile
+from app.deps import api_error, require_member
 from app.geo import haversine_meters
 from app.models import Activity, Attendance, User
 from app.schemas import (
@@ -22,6 +22,7 @@ from app.services import (
     get_app_settings,
     now_local,
     parse_hhmm,
+    record_attendance_stats,
     record_out,
     resolve_venue,
 )
@@ -109,7 +110,7 @@ def _status(db: Session, user: User) -> dict:
 
 @router.get("/status", response_model=AttendanceStatusOut)
 def attendance_status(
-    user: User = Depends(require_complete_profile),
+    user: User = Depends(require_member),
     db: Session = Depends(get_db),
 ):
     return _status(db, user)
@@ -120,7 +121,7 @@ def attendance_status(
 def submit_attendance(
     request: Request,
     payload: SubmitAttendanceIn,
-    user: User = Depends(require_complete_profile),
+    user: User = Depends(require_member),
     db: Session = Depends(get_db),
 ):
     status = _status(db, user)
@@ -160,6 +161,9 @@ def submit_attendance(
         distance_m=round(distance, 1),
     )
     db.add(attendance)
+    # Keep the denormalised membership columns in step, in the same
+    # transaction: a dormant member becomes active again by checking in.
+    record_attendance_stats(user, attendance.attended_at)
     try:
         db.commit()
     except IntegrityError:
@@ -182,7 +186,7 @@ def submit_attendance(
 def my_attendance(
     from_: str = Query(alias="from", pattern=r"^\d{4}-\d{2}-\d{2}$"),
     to: str = Query(pattern=r"^\d{4}-\d{2}-\d{2}$"),
-    user: User = Depends(require_complete_profile),
+    user: User = Depends(require_member),
     db: Session = Depends(get_db),
 ):
     rows = (
@@ -203,7 +207,7 @@ def my_attendance(
 def my_history(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
-    user: User = Depends(require_complete_profile),
+    user: User = Depends(require_member),
     db: Session = Depends(get_db),
 ):
     query = (

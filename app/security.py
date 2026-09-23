@@ -1,6 +1,6 @@
 import hashlib
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import Response
 
@@ -18,7 +18,25 @@ def hash_token(token: str) -> str:
 
 
 def session_expiry() -> datetime:
-    return datetime.utcnow() + timedelta(days=get_settings().session_ttl_days)
+    # Naive UTC, matching how expires_at is compared in deps.get_current_user.
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    return now + timedelta(days=get_settings().session_ttl_days)
+
+
+def purge_expired_sessions(db) -> int:
+    """Delete session rows that are past their expiry.
+
+    They are already rejected on use; this just stops the table growing for
+    ever. Called at startup — cheap, and there is no scheduler here.
+    """
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    from app.models import AuthSession  # imported here to avoid a cycle
+
+    removed = (
+        db.query(AuthSession).filter(AuthSession.expires_at < now).delete()
+    )
+    db.commit()
+    return removed
 
 
 def set_session_cookie(response: Response, token: str) -> None:
