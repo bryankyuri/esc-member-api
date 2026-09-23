@@ -96,7 +96,7 @@ def parse_hhmm(day: date, hhmm: str) -> datetime:
     return datetime(day.year, day.month, day.day, hours, minutes)
 
 
-def compute_streak(db: Session, user_id: int, today: str) -> int:
+def compute_streak(db: Session, user_id: str, today: str) -> int:
     """Consecutive attended sessions counting back from the most recent
     finished (or attended) attendance event. Libur sessions are skipped."""
     sessions = (

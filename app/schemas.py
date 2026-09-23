@@ -16,7 +16,7 @@ class ApiModel(BaseModel):
 
 
 class UserOut(ApiModel):
-    id: int
+    id: str
     email: str
     full_name: str
     avatar_url: str | None
@@ -58,7 +58,7 @@ class UpdateProfileIn(ApiModel):
 
 
 class VenueOut(ApiModel):
-    id: int
+    id: str
     name: str
     address: str
     lat: float
@@ -84,7 +84,7 @@ class ActivityVenueOut(ApiModel):
 class ActivityMemberOut(ApiModel):
     """Activity shape for the member app (venue embedded as name/address)."""
 
-    id: int
+    id: str
     title: str
     description: str | None
     date: str
@@ -98,7 +98,7 @@ class ActivityMemberOut(ApiModel):
 class ActivityAdminOut(ApiModel):
     """Activity shape for the dashboard (venue as id, code visible)."""
 
-    id: int
+    id: str
     title: str
     description: str | None
     date: str
@@ -106,7 +106,7 @@ class ActivityAdminOut(ApiModel):
     end_time: str
     is_attendance_event: bool
     is_holiday: bool
-    venue_id: int | None
+    venue_id: str | None
     attendance_code: str | None
 
 
@@ -122,7 +122,7 @@ class ActivityIn(ApiModel):
     end_time: str = Field(pattern=r"^\d{2}:\d{2}$")
     is_attendance_event: bool
     is_holiday: bool = False
-    venue_id: int | None = None
+    venue_id: str | None = None
 
 
 # ---- Attendance (member) ----------------------------------------------
@@ -147,8 +147,8 @@ class SubmitAttendanceIn(ApiModel):
 
 
 class AttendanceRecordOut(ApiModel):
-    id: int
-    activity_id: int
+    id: str
+    activity_id: str
     activity_title: str
     date: str
     attended_at: str
@@ -172,7 +172,7 @@ class PagedHistoryOut(ApiModel):
 
 
 class MemberRowOut(ApiModel):
-    id: int
+    id: str
     full_name: str
     email: str
     avatar_url: str | None
@@ -193,8 +193,8 @@ class UpdateMemberIn(ApiModel):
 
 
 class AttendanceLogRowOut(ApiModel):
-    id: int
-    member_id: int
+    id: str
+    member_id: str
     member_name: str
     attended_at: str
     distance_m: float
@@ -202,7 +202,7 @@ class AttendanceLogRowOut(ApiModel):
 
 
 class SessionSummaryOut(ApiModel):
-    activity_id: int
+    activity_id: str
     date: str
     title: str
     attendee_count: int

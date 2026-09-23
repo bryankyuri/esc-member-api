@@ -6,4 +6,8 @@ venv/
 esc.db
 esc.db-wal
 esc.db-shm
+esc.db.bak-*
+# Sanitised copy of production, used to seed local dev (no personal data,
+# but still not something to commit). See scripts/seed_local.py.
+esc-sanitized.db
 data/

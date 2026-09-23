@@ -54,6 +54,24 @@ redirect URI to the same client and set `COOKIE_DOMAIN=.earhousesongwritingclub.
 - `superadmin` is **env-only** (`SUPERADMIN_EMAILS`) — applied as an overlay
   at request time, never stored, cannot be modified via the API.
 
+## Database schema (Alembic)
+
+The schema is owned by **Alembic** and applied automatically when the app
+starts (`app/migrations.py`), so a deploy needs no extra step:
+
+- a database created before Alembic is **stamped** with `0001_baseline`, then
+  upgraded;
+- an empty database runs every migration;
+- ids are **UUIDv7 strings** (`app/ids.py`), never auto-increment integers.
+
+```bash
+alembic revision -m "add x"     # new migration (autogenerate needs DATABASE_URL set)
+alembic upgrade head            # normally unnecessary — startup does it
+alembic current                 # where this database stands
+python -m scripts.seed_local    # refresh local dev data from a sanitised copy
+python -m scripts.verify_uuid before.db after.db
+```
+
 ## Notes
 
 - Weekly session rows are auto-created on the configured day
@@ -61,5 +79,5 @@ redirect URI to the same client and set `COOKIE_DOMAIN=.earhousesongwritingclub.
 - Attendance validation (server-authoritative): time window, `is_holiday`,
   geofence (haversine vs resolved venue), GPS accuracy threshold, optional
   attendance code, and a DB `UNIQUE(user_id, activity_id)` constraint.
-- Schema is `create_all` for now; adopt Alembic before the first production
-  schema change.
+- Schema is managed by Alembic (see above); `create_all` and the old
+  hand-rolled column migrations were removed in Phase 0.

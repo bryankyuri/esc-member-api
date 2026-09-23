@@ -14,12 +14,13 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+from app.ids import new_id
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     google_sub: Mapped[str] = mapped_column(String, unique=True, index=True)
     email: Mapped[str] = mapped_column(String, unique=True, index=True)
     full_name: Mapped[str] = mapped_column(String)
@@ -49,8 +50,10 @@ class User(Base):
 class AuthSession(Base):
     __tablename__ = "auth_sessions"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), index=True
+    )
     token_hash: Mapped[str] = mapped_column(String, unique=True, index=True)
     expires_at: Mapped[datetime] = mapped_column(DateTime)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
@@ -63,7 +66,7 @@ class AuthSession(Base):
 class Venue(Base):
     __tablename__ = "venues"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     name: Mapped[str] = mapped_column(String)
     address: Mapped[str] = mapped_column(String, default="")
     lat: Mapped[float] = mapped_column(Float)
@@ -80,7 +83,7 @@ class Venue(Base):
 class Activity(Base):
     __tablename__ = "activities"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     title: Mapped[str] = mapped_column(String)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     date: Mapped[str] = mapped_column(String, index=True)  # YYYY-MM-DD
@@ -88,12 +91,12 @@ class Activity(Base):
     end_time: Mapped[str] = mapped_column(String)  # HH:MM
     is_attendance_event: Mapped[bool] = mapped_column(Boolean, default=True)
     is_holiday: Mapped[bool] = mapped_column(Boolean, default=False)
-    venue_id: Mapped[int | None] = mapped_column(
-        ForeignKey("venues.id"), nullable=True
+    venue_id: Mapped[str | None] = mapped_column(
+        String(36), ForeignKey("venues.id"), nullable=True
     )
     attendance_code: Mapped[str | None] = mapped_column(String, nullable=True)
-    created_by: Mapped[int | None] = mapped_column(
-        ForeignKey("users.id"), nullable=True
+    created_by: Mapped[str | None] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=True
     )
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
@@ -109,9 +112,13 @@ class Attendance(Base):
         UniqueConstraint("user_id", "activity_id", name="uq_attendance_user_activity"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
-    activity_id: Mapped[int] = mapped_column(ForeignKey("activities.id"), index=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), index=True
+    )
+    activity_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("activities.id"), index=True
+    )
     attended_at: Mapped[datetime] = mapped_column(DateTime)
     lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     lng: Mapped[float | None] = mapped_column(Float, nullable=True)

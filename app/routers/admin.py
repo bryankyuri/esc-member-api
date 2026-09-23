@@ -147,7 +147,7 @@ def sessions(limit: int = Query(20, ge=1, le=200), db: Session = Depends(get_db)
 
 
 @router.get("/attendance", response_model=list[AttendanceLogRowOut])
-def attendance_log(activity_id: int, db: Session = Depends(get_db)):
+def attendance_log(activity_id: str, db: Session = Depends(get_db)):
     rows = (
         db.query(Attendance)
         .filter(Attendance.activity_id == activity_id)
@@ -228,7 +228,7 @@ def members(db: Session = Depends(get_db)):
 
 
 @router.get("/members/{member_id}", response_model=MemberRowOut)
-def member_detail(member_id: int, db: Session = Depends(get_db)):
+def member_detail(member_id: str, db: Session = Depends(get_db)):
     user = db.get(User, member_id)
     if user is None:
         raise api_error(404, "unknown", "member not found")
@@ -237,7 +237,7 @@ def member_detail(member_id: int, db: Session = Depends(get_db)):
 
 @router.get("/members/{member_id}/attendance", response_model=PagedRecordsOut)
 def member_attendance(
-    member_id: int,
+    member_id: str,
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db),
@@ -259,7 +259,7 @@ def member_attendance(
 
 @router.patch("/members/{member_id}", response_model=MemberRowOut)
 def update_member(
-    member_id: int,
+    member_id: str,
     payload: UpdateMemberIn,
     db: Session = Depends(get_db),
 ):
@@ -344,7 +344,7 @@ def generate_sessions(
 
 
 def _assert_no_duplicate_session(
-    db: Session, payload: ActivityIn, exclude_id: int | None = None
+    db: Session, payload: ActivityIn, exclude_id: str | None = None
 ) -> None:
     """At most one attendance session per date."""
     if not payload.is_attendance_event:
@@ -375,7 +375,7 @@ def create_activity(
 
 @router.patch("/activities/{activity_id}", response_model=ActivityAdminOut)
 def update_activity(
-    activity_id: int, payload: ActivityIn, db: Session = Depends(get_db)
+    activity_id: str, payload: ActivityIn, db: Session = Depends(get_db)
 ):
     activity = db.get(Activity, activity_id)
     if activity is None:
@@ -388,7 +388,7 @@ def update_activity(
 
 
 @router.delete("/activities/{activity_id}", status_code=204)
-def delete_activity(activity_id: int, db: Session = Depends(get_db)):
+def delete_activity(activity_id: str, db: Session = Depends(get_db)):
     activity = db.get(Activity, activity_id)
     if activity is None:
         return
@@ -422,7 +422,7 @@ def delete_activity(activity_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/activities/{activity_id}/code", response_model=ActivityAdminOut)
-def generate_code(activity_id: int, db: Session = Depends(get_db)):
+def generate_code(activity_id: str, db: Session = Depends(get_db)):
     activity = db.get(Activity, activity_id)
     if activity is None:
         raise api_error(404, "unknown", "activity not found")
@@ -432,7 +432,7 @@ def generate_code(activity_id: int, db: Session = Depends(get_db)):
 
 
 @router.delete("/activities/{activity_id}/code", response_model=ActivityAdminOut)
-def remove_code(activity_id: int, db: Session = Depends(get_db)):
+def remove_code(activity_id: str, db: Session = Depends(get_db)):
     activity = db.get(Activity, activity_id)
     if activity is None:
         raise api_error(404, "unknown", "activity not found")
@@ -463,7 +463,7 @@ def create_venue(payload: VenueIn, db: Session = Depends(get_db)):
 
 
 @router.patch("/venues/{venue_id}", response_model=VenueOut)
-def update_venue(venue_id: int, payload: VenueIn, db: Session = Depends(get_db)):
+def update_venue(venue_id: str, payload: VenueIn, db: Session = Depends(get_db)):
     venue = db.get(Venue, venue_id)
     if venue is None or not venue.is_active:
         raise api_error(404, "unknown", "venue not found")
@@ -474,7 +474,7 @@ def update_venue(venue_id: int, payload: VenueIn, db: Session = Depends(get_db))
 
 
 @router.patch("/venues/{venue_id}/default", response_model=VenueOut)
-def set_default_venue(venue_id: int, db: Session = Depends(get_db)):
+def set_default_venue(venue_id: str, db: Session = Depends(get_db)):
     venue = db.get(Venue, venue_id)
     if venue is None or not venue.is_active:
         raise api_error(404, "unknown", "venue not found")
@@ -485,7 +485,7 @@ def set_default_venue(venue_id: int, db: Session = Depends(get_db)):
 
 
 @router.delete("/venues/{venue_id}", status_code=204)
-def deactivate_venue(venue_id: int, db: Session = Depends(get_db)):
+def deactivate_venue(venue_id: str, db: Session = Depends(get_db)):
     venue = db.get(Venue, venue_id)
     if venue is None:
         return
